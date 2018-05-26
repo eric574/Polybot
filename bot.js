@@ -20,11 +20,15 @@ var detected_languages = [];
 var percentages = [];
 var obj = {};
 var obj1 = {};
+var valid_words = [];
+valid_words[0] = "a";
+valid_words[1] = "i";
+valid_words[2] = "o";
 
 client.on('message', msg => {
-    if(msg.author.id!=client.user.id){
+    if(msg.author.id != client.user.id){
         detectLanguage.detect(msg.content, function(error, result) {
-            var defaultLang = "";
+            var defaultLang = "ENGLISH"; // Set english as default for now
             var lang = result[0]["language"];
             var reliable = result[0]["isReliable"];
         if (msg.content.split(" ").length == 1) {
@@ -34,13 +38,28 @@ client.on('message', msg => {
             if(reliable){
                 languages.forEach(function(language){
                     //console.log(entry);
-                    if(language["code"]===lang){
+                    if (msg.content.length() == 1) {
+                        msg.channel.send("ENGLISH \nPercentage: 100%");
+                    }
+                    else if(language["code"]===lang){
                         defaultLang=language["name"];
                         //msg.channel.send(language["name"]);
                     }
                 });
                 msg.channel.send(defaultLang + "\nPercentage: 100%");
                 //msg.channel.send(l);
+            }
+            else {
+                // Check for valid one-letter English words
+                for (var key in valid_words) {
+                    var equal = (valid_words[key].toUpperCase() == msg.content.toUpperCase());
+                    if (equal) {
+                        msg.channel.send("ENGLISH \nPercentage: 100%");
+                        return;
+                    }
+                }
+                msg.channel.send("Sorry, please enter a valid word");
+                return;
             }
         }
             else if (msg.content.split(" ").length > 1) {
