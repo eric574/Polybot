@@ -5,8 +5,8 @@ const client = new Discord.Client();
 var detectLanguage = new DetectLanguage({
     key:'c6378c3e5bf306205bdee72bc263b5d2'
 });
-var languages = {};
-detectLanguage.languages(function(error, result) {
+var languages={};
+detectLanguage.languages(function(error,result){
     //console.log(result);
     languages=result;
 });
@@ -15,41 +15,76 @@ client.on('ready', () => {
     console.log(`Logged in as ${client.user.tag}!`);
 });
 
-var string_languages = "";
-var percent = 0.0;
-var lang_cnt = 0;
-var total_cnt = 0;
-// var total_cnt = languages.length;
-// if (total_cnt) console.log(totaL_cnt);
-const set1 = new Set();
-const set2 = new Set();
+var lang_cnt = 0, total_cnt = 0;
+var detected_languages = [];
+var percentages = [];
+var obj = {};
+var obj1 = {};
 
 client.on('message', msg => {
-    if (msg.author.id != client.user.id) {
-        percent = lang_cnt = 0;
+    if(msg.author.id!=client.user.id){
         detectLanguage.detect(msg.content, function(error, result) {
+            var defaultLang = "";
             var lang = result[0]["language"];
             var reliable = result[0]["isReliable"];
+        if (msg.content.split(" ").length == 1) {
             //console.log(JSON.stringify(a));
-            // console.log(lang);
-            // console.log(reliable);
-            if (reliable) {
-                languages.forEach(function(language) {
-                    // console.log(language);
-                    if (language["code"] === lang) {
-                        // msg.channel.send(language["name"]);
-                        lang_cnt++;
-                        set1.add(language["name"]);
-                        string_languages += language["name"];
+            //console.log(l);
+            //console.log(r);
+            if(reliable){
+                languages.forEach(function(language){
+                    //console.log(entry);
+                    if(language["code"]===lang){
+                        defaultLang=language["name"];
+                        //msg.channel.send(language["name"]);
                     }
                 });
-                if (languages.length) percent = 1.0 * lang_cnt / languages.length;
+                msg.channel.send(defaultLang + "\nPercentage: 100%");
                 //msg.channel.send(l);
-                msg.channel.send("Languages: ");
-                for (let x of set1) {
-                    msg.channel.send(x);
-                }
-                if (percent) msg.channel.send("Percentage: " + percent + "%");
+            }
+        }
+            else if (msg.content.split(" ").length > 1) {
+                total_cnt = msg.content.split(" ").length;
+                // msg.channel.send(total_cnt);
+                console.log(msg.content.split(" "));
+                detectLanguage.detect(msg.content.split(" "),function(error,result){
+                    // console.log(result);
+                        result.forEach(function(entry){
+                        // console.log(entry);
+                        var lang = entry[0]["language"];
+                        var reliable = entry[0]["isReliable"];
+                        lang_cnt = 0
+                        if(reliable){
+                            languages.forEach(function(language){
+                                //console.log(entry);
+                                if(language["code"]===lang){
+                                    detected_languages.push(language["code"]);
+                                    // msg.channel.send(language["name"]);
+                                    lang_cnt++;
+                                    var percent = Math.round((100.0 * lang_cnt / total_cnt) * 100) / 100; 
+                                    var per = "Percentage: " + percent.toString() + "%";
+                                    percentages.push(percent);
+                                    console.log(language["name"]);
+                                    console.log(per);
+                                    msg.channel.send(language["name"]);
+                                    msg.channel.send(per);
+                                    /*obj = {
+                                        key1: language["name"],
+                                        key2: per
+                                    }*/
+                                }
+                            });
+                            process.on('unhandledRejection', (reason, p) => {
+                                console.log('Unhandled Rejection at: Promise', p, 'reason:', reason);
+                                // application specific logging, throwing an error, or other logic here
+                            });
+                        }
+                        else {
+                            msg.channel.send(defaultLang);
+                        }
+                    });
+                    //msg.channel.send(l);
+                });
             }
         });
     }
