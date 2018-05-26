@@ -1,16 +1,15 @@
-var Discord = require('discord.io');
-var logger = require('winston');
+const Discord = require('discord.js');
 var auth = require('./auth.json');
-// Configure logger settings
-logger.remove(logger.transports.Console);
-logger.add(logger.transports.Console, {
-    colorize: true
+const client = new Discord.Client();
+
+client.on('ready', () => {
+  console.log(`Logged in as ${client.user.tag}!`);
 });
-logger.level = 'debug';
-// Initialize Discord Bot
-var bot = new Discord.Client({
-   token: auth.token,
-   autorun: true
+
+client.on('message', msg => {
+  if (msg.content === 'ping') {
+    msg.reply('Pong!');
+  }
 });
 bot.on('ready', function (evt) {
     logger.info('Connected');
@@ -33,8 +32,14 @@ bot.on('message', function (user, userID, channelID, message, evt) {
                     to: channelID,
                     message: 'Pong!'
                 });
+            case 'Test':
+                bot.sendMessage({
+                    to: channelId,
+                    message: 'TESTING!'
+                });
             break;
             // Just add any case commands if you want to..
          }
      }
 });
+client.login(auth.token);
