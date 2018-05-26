@@ -1,0 +1,8 @@
+{
+  "name": "Free Discord",
+  "version": "1.0.0",
+  "description": "Discord without borders",
+  "main": "bot.js",
+  "author": "ENDJ",
+  "dependencies": {}
+}
