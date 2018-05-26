@@ -10,9 +10,11 @@ client.on('ready', () => {
 
 client.on('message', msg => {
 	if(msg.author.id!=client.user.id){
-		var x = ld.detect(msg.content,1)[0][0];
-		console.log(x);
-		msg.channel.send(x);
+		var x = ld.detect(msg.content);
+		x.forEach(function(entry) {
+			console.log(entry);
+		});
+		console.log();
 	}
 });
 
