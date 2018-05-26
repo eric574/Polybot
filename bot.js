@@ -1,45 +1,39 @@
 const Discord = require('discord.js');
+const DetectLanguage = require('detectlanguage');
 var auth = require('./auth.json');
 const client = new Discord.Client();
+var detectLanguage = new DetectLanguage({
+    key:'c6378c3e5bf306205bdee72bc263b5d2'
+});
+var languages={};
+detectLanguage.languages(function(error,result){
+    //console.log(result);
+    languages=result;
+});
 
 client.on('ready', () => {
-  console.log(`Logged in as ${client.user.tag}!`);
+    console.log(`Logged in as ${client.user.tag}!`);
 });
 
 client.on('message', msg => {
-  if (msg.content === 'ping') {
-    msg.reply('Pong!');
-  }
-});
-bot.on('ready', function (evt) {
-    logger.info('Connected');
-    logger.info('Logged in as: ');
-    logger.info(bot.username + ' - (' + bot.id + ')');
-});
-// console.log(bot.username);
-bot.on('message', function (user, userID, channelID, message, evt) {
-    // Our bot needs to know if it will execute a command
-    // It will listen for messages that will start with `!`
-    if (message.substring(0, 1) == '!') {
-        var args = message.substring(1).split(' ');
-        var cmd = args[0];
-       
-        args = args.splice(1);
-        switch(cmd) {
-            // !ping
-            case 'ping':
-                bot.sendMessage({
-                    to: channelID,
-                    message: 'Pong!'
+    if(msg.author.id != client.user.id){
+        detectLanguage.detect(msg.content, function(error, result) {
+            var lang = result[0]["language"];
+            var reliable = result[0]["isReliable"];
+            //console.log(JSON.stringify(a));
+            //console.log(l);
+            //console.log(r);
+            if(reliable){
+                languages.forEach(function(language){
+                    //console.log(entry);
+                    if(language["code"]===lang){
+                        msg.channel.send(language["name"]);
+                    }
                 });
-            case 'Test':
-                bot.sendMessage({
-                    to: channelID,
-                    message: 'HELLO WORLD!!'
-                });
-            break;
-            // Just add any case commands if you want to..
-         }
-     }
+                //msg.channel.send(l);
+            }
+        });
+    }
 });
+
 client.login(auth.token);
