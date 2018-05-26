@@ -1,4 +1,6 @@
 const Discord = require('discord.js');
+const LD = require('languagedetect');
+var ld = new LD();
 var auth = require('./auth.json');
 const client = new Discord.Client();
 
@@ -7,9 +9,11 @@ client.on('ready', () => {
 });
 
 client.on('message', msg => {
-  if (msg.content === 'ping') {
-    msg.reply('Pong!');
-  }
+	if(msg.author.id!=client.user.id){
+		var x = ld.detect(msg.content,1)[0][0];
+		console.log(x);
+		msg.channel.send(x);
+	}
 });
 
 client.login(auth.token);
