@@ -1,0 +1,17 @@
+language: node_js
+sudo: false
+node_js:
+- '10'
+- '9'
+- '8'
+- '7'
+- '6'
+- '5'
+- '4'
+install:
+- npm install
+script:
+- npm test
+env:
+  global:
+    secure: c9C48dtqsLNKkf/JPzp1B+M0oIWWt4k0Y1Mf5dl++Nt2RheIVh78s91RhwMYd8/WXp7/mCplkhS/hJoRAvSO39GLn4xHAInu5UuBl9KwvnojA4oo/5WW7I2E4ZNzETsjqAnriF80gJfPXumQ9T+toEza2Bbb8Q1jpfEEiXLPWJehMnBMy5D4TfZFXr7HJ7l0P06gUjvmdXyO+3/MPJo73M8CJTGRqFkbcap/CC3qTgPbZJ4NJ7N7NheJ+Fi3bv7vTtw+hwLNbV7BC+bw0KAUYkMn6AgS/FHfgv9YIkMOksn6qmBwjfIqbsRYD6Rp38Q6TCSpwIdHlnNj758j/zKsGpB7aoYKF74JXgS/fthtkUGOaqlHnt9b2Erb3/1pkNSEQ6zROU/Afn36c8KA1Ofgrps4oQhG2UWnxxZ18wi45e7Uvoe4nMxYjRw21LOraHfhljRAEnRBM/OnF+E3t+cx/rk7+ieOsV/6SjDj85D+M6hCJ27+NpdwrIEJ5kntwFsoy26+hw0Whe1HWHht1zOWrCEgs+Fgzb5jJbkJ0gvNE1hFf4oozlYRBFbTAZo0aEgOV7DAtp9ZddvnmYF7xE60tKi11B2/EsN74nh/9+RX7FW5THlySR7X2hGfQOZUjmsZCsSxxkJ9V4GnIpeNAHyhDMhcJZRQ2b0WySJoLtCpiro=
