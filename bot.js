@@ -34,8 +34,8 @@ bot.on('message', function (user, userID, channelID, message, evt) {
                 });
             case 'Test':
                 bot.sendMessage({
-                    to: channelId,
-                    message: 'TESTING!'
+                    to: channelID,
+                    message: 'HELLO WORLD!!'
                 });
             break;
             // Just add any case commands if you want to..
