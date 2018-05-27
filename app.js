@@ -133,5 +133,4 @@ client.on("message", async message => {
       .catch(error => message.reply(`Couldn't delete messages because of: ${error}`));
   }
 });
-
 client.login(config.token);
