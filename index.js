@@ -17,18 +17,33 @@ client.on('message', async message => {
 	if (adminCmd.checkAdmin(message)) return;
 	else {
 		switch(command) {
-			case '?TRANSLATE':
+			case '!TRANSLATE':
 				message.reply('Doing translate feature!');
 				break;
-			case '?DETECT':
+			case '!DETECT':
 				message.reply('Doing detection feature!');
 				break;
 			// Can use the built-in text-to-speech feature for this
-			case '?TTS':
+			case '!TTS':
 				message.reply('Doing text-to-speech feature!');
 				break;
-			case '?SENTIMENT':
+			case '!SENTIMENT':
 				message.reply('Doing the sentiment-analyzing!');
+				break;
+			case '!PRICE':
+				message.reply('Displaying stock price!');
+				break;
+			case '!GAMBLE':
+				message.reply('Gambling points!');
+				break;
+			case '!WEATHER':
+				message.reply('Fetching weather!');
+				break;
+			case '!8BALL':
+				message.reply('Answering your question!');
+				break;
+			case '!CHAT':
+				message.reply('Talk with Cleverbot!');
 				break;
 		}	
 	}
